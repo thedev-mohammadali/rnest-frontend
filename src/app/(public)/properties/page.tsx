@@ -18,7 +18,7 @@ const PropertiesPage = () => {
       <div className="grid grid-cols-1 gap-8 lg:grid-cols-4">
         {/* Desktop Filters */}
         <aside className="hidden lg:col-span-1 lg:block">
-          <Card className="sticky top-4 p-4">
+          <Card className="sticky top-24 p-4">
             <PropertyFilters />
           </Card>
         </aside>
