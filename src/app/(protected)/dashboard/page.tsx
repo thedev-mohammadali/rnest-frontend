@@ -1,7 +1,7 @@
-import TenantDashboard from "@/components/dashboard/tenant/tenant-dashboard";
+import DashboardRouter from "@/components/dashboard/dashboard-router";
 
 const DashboardPage = () => {
-  return <TenantDashboard />;
+  return <DashboardRouter />;
 };
 
 export default DashboardPage;
