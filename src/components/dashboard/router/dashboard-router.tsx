@@ -1,4 +1,5 @@
 import { currentUser } from "@/lib/mock-user";
+import AdminDashboard from "../admin/admin-dashboard";
 import LandlordDashboard from "../landlord/landlord-dashboard";
 import TenantDashboard from "../tenant/tenant-dashboard";
 
@@ -10,8 +11,8 @@ const DashboardRouter = () => {
     case "LANDLORD":
       return <LandlordDashboard />;
 
-    // case "ADMIN":
-    //   return <AdminDashboard />;
+    case "ADMIN":
+      return <AdminDashboard />;
 
     default:
       return null;
