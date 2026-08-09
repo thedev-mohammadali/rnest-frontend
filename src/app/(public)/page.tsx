@@ -1,5 +1,5 @@
 import HeroSection from "@/components/home/hero/hero-section";
-import Properties from "@/components/home/properties/properties";
+import PropertyCard from "@/components/home/properties/grid/property-card";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 
@@ -16,7 +16,11 @@ const HomePage = () => {
             <p>Explore our latest available rental properties</p>
           </div>
 
-          <Properties />
+          <div className="mt-8 grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
+            {Array.from({ length: 6 }).map((_, index) => (
+              <PropertyCard key={index} />
+            ))}
+          </div>
 
           <div className="mt-8 flex justify-center">
             <Button asChild size={"lg"}>
