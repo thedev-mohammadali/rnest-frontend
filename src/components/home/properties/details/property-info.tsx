@@ -1,33 +1,45 @@
+import { formatCurrency } from "@/lib/formatter/currency";
+import { Property } from "@/types/property";
 import { MapPin } from "lucide-react";
 
-const PropertyInfo = () => {
+type Props = {
+  property: Property;
+};
+
+const PropertyInfo = ({ property }: Props) => {
   return (
     <section className="space-y-6">
       <div className="space-y-2">
         <h1 className="text-4xl font-semibold tracking-tight">
-          Modern Apartment Near City Center
+          {property.title}
         </h1>
 
         <div className="text-muted-foreground flex items-center gap-2">
           <MapPin className="size-4" />
 
-          <span>Gulshan, Dhaka</span>
+          <span>{property.location}</span>
         </div>
       </div>
 
       <div className="flex flex-wrap gap-3">
         <span className="bg-muted rounded-full px-3 py-1 text-sm">
-          Apartment
+          {property.category.name}
         </span>
 
-        <span className="rounded-full bg-green-100 px-3 py-1 text-sm text-green-700">
-          Available
+        <span
+          className={`rounded-full px-3 py-1 text-sm font-medium ${
+            property.isAvailable
+              ? "bg-green-100 text-green-700"
+              : "bg-red-100 text-red-700"
+          }`}
+        >
+          {property.isAvailable ? "Available" : "Rented"}
         </span>
       </div>
 
       <div>
         <p className="text-3xl font-bold">
-          ৳25,000
+          {formatCurrency(property.rent, "BDT")}
           <span className="text-muted-foreground text-base font-normal">
             {" "}
             / month
@@ -39,8 +51,7 @@ const PropertyInfo = () => {
         <h2 className="text-lg font-semibold">About this property</h2>
 
         <p className="text-muted-foreground leading-7">
-          A beautiful modern apartment with spacious rooms, natural lighting,
-          and convenient access to nearby facilities.
+          {property.description}
         </p>
       </div>
     </section>

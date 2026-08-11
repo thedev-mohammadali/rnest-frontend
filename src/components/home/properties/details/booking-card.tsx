@@ -2,12 +2,18 @@
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { formatCurrency } from "@/lib/formatter/currency";
+import { Property } from "@/types/property";
 import { useState } from "react";
 import BookingModal from "./booking-modal";
 import DatePicker from "./date-picker";
 import DurationSelect from "./duration-select";
 
-const BookingCard = () => {
+type Props = {
+  property: Property;
+};
+
+const BookingCard = ({ property }: Props) => {
   const [moveInDate, setMoveInDate] = useState<Date | undefined>();
   const [duration, setDuration] = useState<number>(12);
   const [open, setOpen] = useState(false);
@@ -18,7 +24,7 @@ const BookingCard = () => {
         <CardContent className="space-y-6 p-6">
           <div>
             <p className="text-3xl font-bold">
-              ৳25,000
+              {formatCurrency(property.rent)}
               <span className="text-muted-foreground text-base font-normal">
                 {" "}
                 / month
@@ -27,8 +33,14 @@ const BookingCard = () => {
           </div>
 
           <div>
-            <span className="rounded-full bg-green-100 px-3 py-1 text-sm font-medium text-green-700">
-              Available
+            <span
+              className={`rounded-full px-3 py-1 text-sm font-medium ${
+                property.isAvailable
+                  ? "bg-green-100 text-green-700"
+                  : "bg-red-100 text-red-700"
+              }`}
+            >
+              {property.isAvailable ? "Available" : "Rented"}
             </span>
           </div>
 

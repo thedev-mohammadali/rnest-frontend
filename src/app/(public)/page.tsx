@@ -1,9 +1,11 @@
 import HeroSection from "@/components/home/hero/hero-section";
-import PropertyCard from "@/components/home/properties/grid/property-card";
+import FeaturedProperties from "@/components/home/properties/featured-properties";
+import FeaturedPropertiesSkeleton from "@/components/home/properties/featured-properties-skeleton";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { Suspense } from "react";
 
-const HomePage = () => {
+const HomePage = async () => {
   return (
     <>
       <HeroSection />
@@ -16,11 +18,9 @@ const HomePage = () => {
             <p>Explore our latest available rental properties</p>
           </div>
 
-          <div className="mt-8 grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
-            {Array.from({ length: 6 }).map((_, index) => (
-              <PropertyCard key={index} />
-            ))}
-          </div>
+          <Suspense fallback={<FeaturedPropertiesSkeleton />}>
+            <FeaturedProperties />
+          </Suspense>
 
           <div className="mt-8 flex justify-center">
             <Button asChild size={"lg"}>

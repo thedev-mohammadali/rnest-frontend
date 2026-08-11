@@ -1,26 +1,30 @@
+import { Property } from "@/types/property";
 import { Bath, Bed, Ruler } from "lucide-react";
 
-const features = [
-  {
-    icon: Bed,
-    label: "Bedrooms",
-    value: "3",
-  },
+type Props = {
+  property: Property;
+};
 
-  {
-    icon: Bath,
-    label: "Bathrooms",
-    value: "2",
-  },
+const PropertyFeatures = ({ property }: Props) => {
+  const features = [
+    {
+      icon: Bed,
+      label: "Bedrooms",
+      value: property.bedrooms,
+    },
 
-  {
-    icon: Ruler,
-    label: "Size",
-    value: "1200 sqft",
-  },
-];
+    {
+      icon: Bath,
+      label: "Bathrooms",
+      value: property.bathrooms,
+    },
 
-const PropertyFeatures = () => {
+    {
+      icon: Ruler,
+      label: "Size",
+      value: `${property.size} sqft`,
+    },
+  ];
   return (
     <div className="grid grid-cols-3 gap-4">
       {features.map((item) => {
