@@ -1,10 +1,14 @@
-import { currentUser } from "@/lib/mock-user";
+"use client";
+
+import { useAuth } from "@/hooks/useAuth";
 import AdminDashboard from "../admin/admin-dashboard";
 import LandlordDashboard from "../landlord/landlord-dashboard";
 import TenantDashboard from "../tenant/tenant-dashboard";
 
 const DashboardRouter = () => {
-  switch (currentUser.role) {
+  const { user } = useAuth();
+
+  switch (user.role) {
     case "TENANT":
       return <TenantDashboard />;
 

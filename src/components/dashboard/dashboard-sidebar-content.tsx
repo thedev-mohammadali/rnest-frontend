@@ -1,6 +1,6 @@
 "use client";
 
-import { currentUser } from "@/lib/mock-user";
+import { useAuth } from "@/hooks/useAuth";
 import { logout } from "@/services/auth/auth.client";
 import { Home, LogOutIcon } from "lucide-react";
 import Link from "next/link";
@@ -16,7 +16,9 @@ import {
   tenantSidebarLinks,
 } from "./dashboard-sidebar.config";
 
-const DashboardSidebarContent = () => {
+type Props = { onNavigate?: () => void };
+
+const DashboardSidebarContent = ({ onNavigate }: Props) => {
   const [isLoggingOut, setIsLoggingOut] = useState(false);
 
   const router = useRouter();
@@ -41,11 +43,11 @@ const DashboardSidebarContent = () => {
     }
   };
 
-  const userRole = currentUser.role;
+  const { user } = useAuth();
   const pathname = usePathname();
 
   let links: SidebarLink[];
-  switch (userRole) {
+  switch (user.role) {
     case "TENANT":
       links = tenantSidebarLinks;
       break;
@@ -75,6 +77,7 @@ const DashboardSidebarContent = () => {
           <Link
             key={link.href}
             href={link.href}
+            onClick={onNavigate}
             className={`flex items-center gap-3 rounded-lg px-3 py-2 transition-colors ${
               pathname === link.href
                 ? "bg-primary text-primary-foreground"
@@ -91,7 +94,10 @@ const DashboardSidebarContent = () => {
       <Button
         variant={"destructive"}
         className="mt-3 w-full"
-        onClick={handleLogout}
+        onClick={() => {
+          onNavigate?.();
+          handleLogout();
+        }}
       >
         {isLoggingOut ? <Spinner data-icon="inline-start" /> : <LogOutIcon />}
         {isLoggingOut ? "Logging out..." : "Log out"}

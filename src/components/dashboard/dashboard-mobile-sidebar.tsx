@@ -6,11 +6,14 @@ import { Menu } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 
+import { useState } from "react";
 import DashboardSidebarContent from "./dashboard-sidebar-content";
 
 const DashboardMobileSidebar = () => {
+  const [open, setOpen] = useState(false);
+
   return (
-    <Sheet>
+    <Sheet open={open} onOpenChange={setOpen}>
       <SheetTrigger asChild>
         <Button variant="ghost" size="icon" className="lg:hidden">
           <Menu />
@@ -18,7 +21,7 @@ const DashboardMobileSidebar = () => {
       </SheetTrigger>
 
       <SheetContent side="left" className="p-4">
-        <DashboardSidebarContent />
+        <DashboardSidebarContent onNavigate={() => setOpen(false)} />
       </SheetContent>
     </Sheet>
   );
