@@ -14,3 +14,9 @@ export const login = async (payload: LoginFormValues) => {
 
   return result;
 };
+
+export const logout = async () => {
+  await browserClient("/api/auth/logout", {
+    method: "POST",
+  });
+};

@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { LoginFormValues, loginSchema } from "@/schemas/auth.schema";
-import { login } from "@/services/auth.service";
+import { login } from "@/services/auth/auth.client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
@@ -34,9 +34,10 @@ const LoginForm = () => {
     try {
       await login(values);
 
-      toast("Log in successfull", {
+      toast.success("Log in successfull", {
         position: "top-right",
         closeButton: true,
+        duration: 1000,
       });
 
       router.replace("/dashboard");

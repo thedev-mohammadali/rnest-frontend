@@ -1,9 +1,14 @@
 "use client";
 
 import { currentUser } from "@/lib/mock-user";
-import { Home } from "lucide-react";
+import { logout } from "@/services/auth/auth.client";
+import { Home, LogOutIcon } from "lucide-react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+import { useState } from "react";
+import { toast } from "sonner";
+import { Button } from "../ui/button";
+import { Spinner } from "../ui/spinner";
 import {
   adminSidebarLinks,
   landlordSidebarLinks,
@@ -12,6 +17,30 @@ import {
 } from "./dashboard-sidebar.config";
 
 const DashboardSidebarContent = () => {
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
+
+  const router = useRouter();
+
+  const handleLogout = async () => {
+    setIsLoggingOut(true);
+
+    try {
+      await logout();
+
+      toast.success("Logged out successfully", {
+        position: "top-right",
+        closeButton: true,
+        duration: 1000,
+      });
+
+      router.replace("/");
+
+      router.refresh();
+    } finally {
+      setIsLoggingOut(false);
+    }
+  };
+
   const userRole = currentUser.role;
   const pathname = usePathname();
 
@@ -58,6 +87,15 @@ const DashboardSidebarContent = () => {
           </Link>
         ))}
       </nav>
+
+      <Button
+        variant={"destructive"}
+        className="mt-3 w-full"
+        onClick={handleLogout}
+      >
+        {isLoggingOut ? <Spinner data-icon="inline-start" /> : <LogOutIcon />}
+        {isLoggingOut ? "Logging out..." : "Log out"}
+      </Button>
     </>
   );
 };
