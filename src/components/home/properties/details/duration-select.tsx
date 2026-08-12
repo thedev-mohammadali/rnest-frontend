@@ -15,7 +15,7 @@ type DurationSelectProps = {
 
 const durations = [
   {
-    label: "1 months",
+    label: "1 month",
     value: 1,
   },
   {

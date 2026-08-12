@@ -21,7 +21,8 @@ const PropertyGallery = ({ images }: PropertyGalleryProps) => {
           src={activeImage}
           alt="Property image"
           fill
-          priority
+          sizes="(max-width: 1024px) 100vw, 66vw"
+          fetchPriority="high"
           className="object-cover transition duration-300"
         />
       </div>
@@ -44,6 +45,8 @@ const PropertyGallery = ({ images }: PropertyGalleryProps) => {
                 src={image}
                 alt="Property thumbnail"
                 fill
+                loading={`${i === 0 ? "eager" : "lazy"}`}
+                sizes="(max-width: 1024px) 25vw, 16vw"
                 className="object-cover"
               />
             </AspectRatio>

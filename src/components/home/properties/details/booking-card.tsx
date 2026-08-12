@@ -24,7 +24,7 @@ const BookingCard = ({ property }: Props) => {
         <CardContent className="space-y-6 p-6">
           <div>
             <p className="text-3xl font-bold">
-              {formatCurrency(property.rent)}
+              {formatCurrency(property.rent, "BDT")}
               <span className="text-muted-foreground text-base font-normal">
                 {" "}
                 / month

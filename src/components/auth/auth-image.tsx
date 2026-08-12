@@ -14,6 +14,8 @@ const AuthImage = ({ image, title, description }: Props) => {
         src={image}
         alt="Beautiful rental home"
         fill
+        sizes="(max-width: 1024px) 0vw, 50vw"
+        loading="eager"
         className="object-cover"
       />
 

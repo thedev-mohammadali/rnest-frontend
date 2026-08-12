@@ -1,3 +1,4 @@
+import { Toaster } from "@/components/ui/sonner";
 import { cn } from "@/lib/utils";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
@@ -16,7 +17,10 @@ const RootLayout = ({ children }: LayoutProps<"/">) => {
       lang="en"
       className={cn("h-full", "antialiased", "font-sans", inter.variable)}
     >
-      <body className="flex min-h-full flex-col">{children}</body>
+      <body className="flex min-h-full flex-col">
+        {children}
+        <Toaster />
+      </body>
     </html>
   );
 };

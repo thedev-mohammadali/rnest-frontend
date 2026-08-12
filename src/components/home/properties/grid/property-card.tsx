@@ -7,6 +7,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { formatCurrency } from "@/lib/formatter/currency";
 import { Property } from "@/types/property";
 import { Bed, Scaling, ShowerHead } from "lucide-react";
 import Image from "next/image";
@@ -69,7 +70,9 @@ const PropertyCard = ({ property }: Prop) => {
         <div>
           <span className="text-muted-foreground">Monthly Rent</span>
 
-          <p className="text-xl font-bold">৳ {property.rent}</p>
+          <p className="text-xl font-bold">
+            {formatCurrency(property.rent, "BDT")}
+          </p>
         </div>
 
         <Button asChild>
