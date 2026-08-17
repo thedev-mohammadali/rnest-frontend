@@ -1,15 +1,32 @@
+import { refreshAccessToken } from "@/services/auth/auth.client";
+
+type BrowserClientOptions = RequestInit & {
+  skipRefresh?: boolean;
+};
+
 export const browserClient = async <T>(
   endpoint: string,
-  options?: RequestInit,
+  options?: BrowserClientOptions,
 ): Promise<T> => {
-  const response = await fetch(endpoint, {
-    ...options,
-    credentials: "include",
-    headers: {
-      "Content-Type": "application/json",
-      ...options?.headers,
-    },
-  });
+  const { skipRefresh, ...fetchOptions } = options ?? {};
+
+  const makeRequest = () =>
+    fetch(endpoint, {
+      ...fetchOptions,
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+        ...fetchOptions.headers,
+      },
+    });
+
+  let response = await makeRequest();
+
+  if (response.status === 401 && !skipRefresh) {
+    await refreshAccessToken();
+
+    response = await makeRequest();
+  }
 
   if (!response.ok) {
     let message = "Something went wrong";

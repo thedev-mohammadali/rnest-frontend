@@ -20,3 +20,13 @@ export const logout = async () => {
     method: "POST",
   });
 };
+
+export const refreshAccessToken = async () => {
+  await browserClient("/api/auth/refresh", {
+    method: "POST",
+    cache: "no-store",
+    skipRefresh: true,
+  });
+
+  return true;
+};

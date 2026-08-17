@@ -1,10 +1,13 @@
-import { currentUser } from "@/lib/mock-user";
+"use client";
 
+import { useAuth } from "@/hooks/useAuth";
 import LandlordPayments from "../landlord/payments/landlord-payments";
 import TenantPayments from "../tenant/payments/tenant-payments";
 
 const PaymentsRouter = () => {
-  switch (currentUser.role) {
+  const { user } = useAuth();
+
+  switch (user.role) {
     case "TENANT":
       return <TenantPayments />;
 
