@@ -14,6 +14,18 @@ export const getFeaturedProperties = async () => {
   return result.data;
 };
 
+export const getAllProperties = async () => {
+  const res = await serverClient("/properties", {
+    next: {
+      revalidate: 60,
+    },
+  });
+
+  const result: PaginatedResponse<Property> = await res.json();
+
+  return result.data;
+};
+
 export const getPropertyById = async (id: string): Promise<Property> => {
   const res = await serverClient(`/properties/${id}`, {
     next: {

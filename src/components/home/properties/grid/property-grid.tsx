@@ -1,14 +1,15 @@
+import { Property } from "@/types/property";
 import PropertyCard from "./property-card";
 
-const properties = Array.from({
-  length: 12,
-});
+type Props = {
+  properties: Property[];
+};
 
-const PropertyGrid = () => {
+const PropertyGrid = ({ properties }: Props) => {
   return (
     <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
-      {properties.map((_, index) => (
-        <PropertyCard key={index} />
+      {properties.slice(0, 12).map((property) => (
+        <PropertyCard key={property.id} property={property} />
       ))}
     </div>
   );
