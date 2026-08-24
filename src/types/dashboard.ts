@@ -1,11 +1,29 @@
 export type RentalRequestStatus =
   "PENDING" | "APPROVED" | "REJECTED" | "CANCELLED";
 
+export type RentalRequestTenant = {
+  id: string;
+  name: string;
+  email: string;
+};
+
+export type RentalRequestProperty = {
+  id: string;
+  title: string;
+  location: string;
+  rent: string;
+};
+
 export type RentalRequest = {
   id: string;
-  property: string;
-  location: string;
-  rent: number;
+  tenantId: string;
+  propertyId: string;
   status: RentalRequestStatus;
-  date: string;
+  tenantMessage: string;
+  requestedMoveInDate: string;
+  durationInMonths: number;
+  createdAt: string;
+  updatedAt: string;
+  tenant: RentalRequestTenant;
+  property: RentalRequestProperty;
 };

@@ -1,13 +1,20 @@
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 const QuickActions = () => {
   return (
     <div className="flex flex-wrap gap-3">
-      <Button>Browse Properties</Button>
+      <Button>
+        <Link href={"/properties"}>Browse Properties</Link>
+      </Button>
 
-      <Button variant="outline">View Requests</Button>
+      <Button variant="outline" asChild>
+        <Link href={"/dashboard/requests"}>View Requests</Link>
+      </Button>
 
-      <Button variant="outline">Update Profile</Button>
+      <Button variant="outline" asChild>
+        <Link href={"/dashboard/profile"}>Update Profile</Link>
+      </Button>
     </div>
   );
 };

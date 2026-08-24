@@ -1,22 +1,20 @@
-"use client";
-
-import { useAuth } from "@/hooks/useAuth";
+import { getCurrentUser } from "@/services/auth/auth.server";
 import AdminDashboard from "../admin/admin-dashboard";
 import LandlordDashboard from "../landlord/landlord-dashboard";
 import TenantDashboard from "../tenant/tenant-dashboard";
 
-const DashboardRouter = () => {
-  const { user } = useAuth();
+const DashboardRouter = async () => {
+  const user = await getCurrentUser();
 
-  switch (user.role) {
+  switch (user?.role) {
     case "TENANT":
-      return <TenantDashboard />;
+      return <TenantDashboard user={user} />;
 
     case "LANDLORD":
-      return <LandlordDashboard />;
+      return <LandlordDashboard user={user} />;
 
     case "ADMIN":
-      return <AdminDashboard />;
+      return <AdminDashboard user={user} />;
 
     default:
       return null;

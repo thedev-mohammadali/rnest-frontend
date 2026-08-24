@@ -1,23 +1,15 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
-const stats = [
-  {
-    title: "Rental Requests",
-    value: "2",
-  },
+type stat = {
+  title: string;
+  value: string;
+};
 
-  {
-    title: "Active Agreements",
-    value: "1",
-  },
+type Props = {
+  stats: stat[];
+};
 
-  {
-    title: "Payments Due",
-    value: "৳25,000",
-  },
-];
-
-const TenantStats = () => {
+const TenantStats = ({ stats }: Props) => {
   return (
     <div className="grid gap-4 md:grid-cols-3">
       {stats.map((item) => (

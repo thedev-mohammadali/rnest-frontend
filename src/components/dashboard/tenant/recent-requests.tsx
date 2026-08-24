@@ -1,6 +1,11 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { RentalRequest } from "@/types/dashboard";
 
-const RecentRequests = () => {
+type Props = {
+  requests: RentalRequest[];
+};
+
+const RecentRequests = async ({ requests }: Props) => {
   return (
     <Card>
       <CardHeader>
@@ -9,17 +14,13 @@ const RecentRequests = () => {
 
       <CardContent>
         <div className="space-y-3">
-          <div className="flex justify-between">
-            <span>Modern Apartment</span>
+          {requests.map((request) => (
+            <div key={request.id} className="flex justify-between">
+              <span>{request.property.title}</span>
 
-            <span>Pending</span>
-          </div>
-
-          <div className="flex justify-between">
-            <span>Luxury Villa</span>
-
-            <span>Approved</span>
-          </div>
+              <span>{request.status}</span>
+            </div>
+          ))}
         </div>
       </CardContent>
     </Card>

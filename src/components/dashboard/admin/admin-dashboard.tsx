@@ -1,9 +1,14 @@
+import { User } from "@/types/auth";
 import AdminStats from "./admin-stats";
 import PlatformOverview from "./platform-overview";
 import QuickActions from "./quick-actions";
 import RecentActivity from "./recent-activity";
 
-const AdminDashboard = () => {
+type Props = {
+  user: User;
+};
+
+const AdminDashboard = ({ user }: Props) => {
   return (
     <div className="space-y-8">
       <div>
