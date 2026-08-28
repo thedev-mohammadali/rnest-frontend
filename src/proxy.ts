@@ -9,16 +9,24 @@ export const proxy = async (request: NextRequest) => {
 
   const isHomePage = pathname === "/";
 
+  const isPropertiesPage = pathname.startsWith("/properties");
+
   const isDashboard = pathname.startsWith("/dashboard");
 
   const accessToken = request.cookies.get("accessToken")?.value;
   const refreshToken = request.cookies.get("refreshToken")?.value;
 
   if (isAuthPage && accessToken) {
+    const callbackUrl = request.nextUrl.searchParams.get("callbackUrl");
+
+    if (callbackUrl && isSafeCallbackUrl(callbackUrl)) {
+      return NextResponse.redirect(new URL(callbackUrl, request.url));
+    }
+
     return NextResponse.redirect(new URL("/dashboard", request.url));
   }
 
-  if (!isAuthPage && !isDashboard && !isHomePage) {
+  if (!isAuthPage && !isDashboard && !isHomePage && !isPropertiesPage) {
     return NextResponse.next();
   }
 
@@ -79,5 +87,15 @@ export const proxy = async (request: NextRequest) => {
 };
 
 export const config = {
-  matcher: ["/", "/login", "/register", "/dashboard/:path*", "/properties"],
+  matcher: [
+    "/",
+    "/login",
+    "/register",
+    "/dashboard/:path*",
+    "/properties/:path*",
+  ],
+};
+
+const isSafeCallbackUrl = (url: string | null) => {
+  return !!url && url.startsWith("/") && !url.startsWith("//");
 };

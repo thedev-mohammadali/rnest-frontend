@@ -1,3 +1,4 @@
+import { getCurrentUser } from "@/services/auth/auth.server";
 import { Property } from "@/types/property";
 import BookingCard from "./booking-card";
 import PropertyFeatures from "./property-features";
@@ -8,7 +9,9 @@ type Props = {
   property: Property;
 };
 
-const PropertyDetails = ({ property }: Props) => {
+const PropertyDetails = async ({ property }: Props) => {
+  const user = await getCurrentUser();
+
   return (
     <main className="container mx-auto space-y-10 px-4 py-10">
       <PropertyGallery images={property.images} />
@@ -22,7 +25,7 @@ const PropertyDetails = ({ property }: Props) => {
 
         <aside className="lg:col-span-1">
           <div className="sticky top-24">
-            <BookingCard property={property} />
+            <BookingCard property={property} user={user} />
           </div>
         </aside>
       </div>

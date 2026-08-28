@@ -11,7 +11,7 @@ import { Label } from "@/components/ui/label";
 import { LoginFormValues, loginSchema } from "@/schemas/auth.schema";
 import { login } from "@/services/auth/auth.client";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { toast } from "sonner";
 import { Spinner } from "../ui/spinner";
 
@@ -27,6 +27,10 @@ const LoginForm = () => {
   });
 
   const router = useRouter();
+  const searchParams = useSearchParams();
+
+  const callbackUrl = searchParams.get("callbackUrl");
+  console.log(callbackUrl);
 
   const handleFormSubmit = async (values: LoginFormValues) => {
     clearErrors("root");
@@ -40,7 +44,7 @@ const LoginForm = () => {
         duration: 1000,
       });
 
-      router.replace("/dashboard");
+      router.replace(callbackUrl || "/dashboard");
       router.refresh();
     } catch (error) {
       if (error instanceof Error) {

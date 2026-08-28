@@ -3,7 +3,9 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { formatCurrency } from "@/lib/formatter/currency";
+import { User } from "@/types/auth";
 import { Property } from "@/types/property";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import BookingModal from "./booking-modal";
 import DatePicker from "./date-picker";
@@ -11,12 +13,34 @@ import DurationSelect from "./duration-select";
 
 type Props = {
   property: Property;
+  user: User | null;
 };
 
-const BookingCard = ({ property }: Props) => {
+const BookingCard = ({ property, user }: Props) => {
   const [moveInDate, setMoveInDate] = useState<Date | undefined>();
   const [duration, setDuration] = useState<number>(12);
   const [open, setOpen] = useState(false);
+
+  const router = useRouter();
+
+  const isOwner = user?.id === property.landlordId;
+  const disabled = !moveInDate || isOwner;
+
+  const handleBooking = () => {
+    if (!user) {
+      router.push(
+        `/login?callbackUrl=${encodeURIComponent(window.location.pathname)}`,
+      );
+
+      return;
+    }
+
+    if (user.id === property.landlordId) {
+      return;
+    }
+
+    setOpen(true);
+  };
 
   return (
     <>
@@ -60,10 +84,10 @@ const BookingCard = ({ property }: Props) => {
 
           <Button
             className="w-full"
-            disabled={!moveInDate}
-            onClick={() => setOpen(true)}
+            disabled={disabled}
+            onClick={handleBooking}
           >
-            Request Booking
+            {isOwner ? "You own this property" : "Request Booking"}
           </Button>
 
           <p className="text-muted-foreground text-center text-xs">

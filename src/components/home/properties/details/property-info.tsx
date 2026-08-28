@@ -1,6 +1,6 @@
 import { formatCurrency } from "@/lib/formatter/currency";
 import { Property } from "@/types/property";
-import { MapPin } from "lucide-react";
+import { MapPin, User } from "lucide-react";
 
 type Props = {
   property: Property;
@@ -18,6 +18,12 @@ const PropertyInfo = ({ property }: Props) => {
           <MapPin className="size-4" />
 
           <span>{property.location}</span>
+        </div>
+
+        <div className="text-muted-foreground flex items-center gap-2">
+          <User className="size-4" />
+
+          <span>{property.landlord.name}</span>
         </div>
       </div>
 
