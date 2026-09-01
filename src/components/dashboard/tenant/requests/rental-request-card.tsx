@@ -1,22 +1,16 @@
 "use client";
 
-import { Card, CardContent } from "@/components/ui/card";
-
 import { Button } from "@/components/ui/button";
-
+import { Card, CardContent } from "@/components/ui/card";
+import { formatCurrency } from "@/lib/formatter/currency";
+import { formatDateTime } from "@/lib/formatter/date";
+import { RentalRequest } from "@/types/rental-requests";
+import { MapPin } from "lucide-react";
 import Link from "next/link";
-
 import RequestStatusBadge from "./request-status-badge";
 
 type Props = {
-  request: {
-    id: string;
-    property: string;
-    location: string;
-    rent: number;
-    status: "PENDING" | "APPROVED" | "REJECTED" | "CANCELLED";
-    date: string;
-  };
+  request: RentalRequest;
 };
 
 const RentalRequestCard = ({ request }: Props) => {
@@ -28,14 +22,19 @@ const RentalRequestCard = ({ request }: Props) => {
     <Card>
       <CardContent className="flex flex-col gap-5 p-6 md:flex-row md:items-center md:justify-between">
         <div className="space-y-2">
-          <h3 className="text-lg font-semibold">{request.property}</h3>
+          <h3 className="text-lg font-semibold">{request.property.title}</h3>
 
-          <p className="text-muted-foreground">📍 {request.location}</p>
+          <p className="text-muted-foreground flex items-center gap-1">
+            <MapPin className="h-4 w-4" />
+            {request.property.location}
+          </p>
 
-          <p className="font-medium">৳{request.rent}/month</p>
+          <p className="font-medium">
+            {formatCurrency(request.property.rent, "BDT")}/month
+          </p>
 
           <p className="text-muted-foreground text-sm">
-            Requested on {request.date}
+            Requested on {formatDateTime(request.createdAt)}
           </p>
         </div>
 
@@ -44,7 +43,9 @@ const RentalRequestCard = ({ request }: Props) => {
 
           <div className="flex gap-2">
             <Button variant="outline" asChild>
-              <Link href={`/properties/${request.id}`}>View Property</Link>
+              <Link href={`/properties/${request.propertyId}`}>
+                View Property
+              </Link>
             </Button>
 
             {request.status === "PENDING" && (

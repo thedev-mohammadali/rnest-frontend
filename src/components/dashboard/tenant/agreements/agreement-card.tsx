@@ -1,25 +1,23 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
-import { Button } from "@/components/ui/button";
+import { formatCurrency } from "@/lib/formatter/currency";
+import { formatDate } from "@/lib/formatter/date";
+import { RentalAgreement } from "@/types/rental-agreement";
+import PayNowButton from "../payments/pay-button";
+import CancelAgreementButton from "./agreement-cancel-button";
 import AgreementStatusBadge from "./agreement-status-badge";
 
 type Props = {
-  agreement: {
-    id: string;
-    property: string;
-    location: string;
-    rent: number;
-    status: "ACTIVE" | "EXPIRED" | "PENDING";
-  };
+  agreement: RentalAgreement;
 };
 
 const AgreementCard = ({ agreement }: Props) => {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>{agreement.property}</CardTitle>
+        <CardTitle>{agreement.property.title}</CardTitle>
 
-        <p className="text-muted-foreground">{agreement.location}</p>
+        <p className="text-muted-foreground">{agreement.property.location}</p>
       </CardHeader>
 
       <CardContent className="space-y-5">
@@ -27,11 +25,13 @@ const AgreementCard = ({ agreement }: Props) => {
           <div>
             <p className="text-muted-foreground text-sm">Monthly Rent</p>
 
-            <p className="font-bold">৳{agreement.rent}</p>
+            <p className="font-bold">
+              {formatCurrency(agreement.property.rent, "BDT")}
+            </p>
           </div>
 
-          <div>
-            <p className="text-muted-foreground text-sm">Status</p>
+          <div className="flex gap-1">
+            <p className="text-muted-foreground text-sm">Status:</p>
 
             <AgreementStatusBadge status={agreement.status} />
           </div>
@@ -40,10 +40,19 @@ const AgreementCard = ({ agreement }: Props) => {
         <div>
           <p className="text-muted-foreground text-sm">Lease Period</p>
 
-          <p>Jan 01, 2026 - Dec 31, 2026</p>
+          <p>
+            {formatDate(agreement.leaseStartDate)} -{" "}
+            {formatDate(agreement.leaseEndDate)}
+          </p>
         </div>
 
-        <Button>View Agreement</Button>
+        {agreement.status === "PENDING_PAYMENT" && (
+          <PayNowButton rentalAgreementId={agreement.id} />
+        )}
+
+        {agreement.status === "ACTIVE" && (
+          <CancelAgreementButton rentalAgreementId={agreement.id} />
+        )}
       </CardContent>
     </Card>
   );

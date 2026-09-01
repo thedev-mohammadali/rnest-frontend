@@ -4,14 +4,16 @@ import DashboardSidebar from "./dashboard-sidebar";
 
 const DashboardShell = ({ children }: { children: ReactNode }) => {
   return (
-    <div className="bg-muted/30 min-h-screen">
-      <div className="flex">
+    <div className="bg-muted/30 h-screen overflow-hidden">
+      <div className="flex h-full">
         <DashboardSidebar />
 
-        <div className="flex min-h-screen min-w-0 flex-1 flex-col">
+        <div className="flex min-h-0 min-w-0 flex-1 flex-col">
           <DashboardHeader />
 
-          <main className="min-w-0 flex-1 p-6">{children}</main>
+          <main className="min-h-0 min-w-0 flex-1 overflow-y-auto p-6">
+            {children}
+          </main>
         </div>
       </div>
     </div>

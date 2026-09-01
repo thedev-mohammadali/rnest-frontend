@@ -1,16 +1,12 @@
+import { getMyRentalAgreements } from "@/services/rental-agreement.service";
+import { RentalAgreementResponse } from "@/types/rental-agreement";
 import AgreementCard from "./agreement-card";
 
-const agreements = [
-  {
-    id: "1",
-    property: "Modern Apartment",
-    location: "Dhaka, Bangladesh",
-    rent: 25000,
-    status: "ACTIVE" as const,
-  },
-];
+const AgreementList = async () => {
+  const agreementResponse: RentalAgreementResponse =
+    await getMyRentalAgreements();
+  const agreements = agreementResponse.data;
 
-const AgreementList = () => {
   return (
     <div className="space-y-4">
       {agreements.map((agreement) => (

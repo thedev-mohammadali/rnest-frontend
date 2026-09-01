@@ -1,13 +1,11 @@
-"use client";
-
-import { useAuth } from "@/hooks/useAuth";
+import { getCurrentUser } from "@/services/auth/auth.server";
 import LandlordAgreements from "../landlord/agreements/landlord-agreements";
 import TenantAgreements from "../tenant/agreements/tenant-agreements";
 
-const AgreementsRouter = () => {
-  const { user } = useAuth();
+const AgreementsRouter = async () => {
+  const user = await getCurrentUser();
 
-  switch (user.role) {
+  switch (user?.role) {
     case "TENANT":
       return <TenantAgreements />;
 
