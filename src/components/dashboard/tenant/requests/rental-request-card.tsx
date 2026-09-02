@@ -1,5 +1,3 @@
-"use client";
-
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { formatCurrency } from "@/lib/formatter/currency";
@@ -7,6 +5,7 @@ import { formatDateTime } from "@/lib/formatter/date";
 import { RentalRequest } from "@/types/rental-requests";
 import { MapPin } from "lucide-react";
 import Link from "next/link";
+import CancelRequestButton from "./cancel-request-button";
 import RequestStatusBadge from "./request-status-badge";
 
 type Props = {
@@ -14,10 +13,6 @@ type Props = {
 };
 
 const RentalRequestCard = ({ request }: Props) => {
-  const handleCancel = () => {
-    console.log("Cancel request", request.id);
-  };
-
   return (
     <Card>
       <CardContent className="flex flex-col gap-5 p-6 md:flex-row md:items-center md:justify-between">
@@ -49,9 +44,7 @@ const RentalRequestCard = ({ request }: Props) => {
             </Button>
 
             {request.status === "PENDING" && (
-              <Button variant="destructive" onClick={handleCancel}>
-                Cancel
-              </Button>
+              <CancelRequestButton requestId={request.id} />
             )}
           </div>
         </div>
