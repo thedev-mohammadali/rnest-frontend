@@ -1,4 +1,10 @@
-import { getMyRentalAgreements } from "@/services/rental-agreement.service";
+import { formatCurrency } from "@/lib/formatter/currency";
+import { getAllPayments } from "@/services/payment.server";
+import {
+  getLatestPendingPayment,
+  getMyRentalAgreements,
+  getRecentActiveAgreement,
+} from "@/services/rental-agreement.service";
 import { getMyRentalRequests } from "@/services/rental-request.service";
 import { PaginatedResponse } from "@/types/api";
 import { User } from "@/types/auth";
@@ -21,12 +27,17 @@ const TenantDashboard = async ({ user }: Props) => {
   const agreementsResponse: PaginatedResponse<RentalAgreement> =
     await getMyRentalAgreements();
 
+  const currentRental = await getRecentActiveAgreement();
+  const latestPendingPayment = await getLatestPendingPayment();
+
   const activeAgreements = agreementsResponse.data?.reduce((prev, curr) => {
     if (curr.status === "ACTIVE") {
       return prev + 1;
     }
     return prev;
   }, 0);
+
+  const { summary } = await getAllPayments();
 
   const stats = [
     {
@@ -40,8 +51,8 @@ const TenantDashboard = async ({ user }: Props) => {
     },
 
     {
-      title: "Payments Due",
-      value: "৳25,000",
+      title: "Total Payments",
+      value: formatCurrency(summary.paid.amount, "BDT"),
     },
   ];
 
@@ -56,9 +67,9 @@ const TenantDashboard = async ({ user }: Props) => {
       <TenantStats stats={stats} />
 
       <div className="grid gap-6 lg:grid-cols-2">
-        <CurrentRentalCard />
+        <CurrentRentalCard currentRental={currentRental} />
 
-        <PaymentCard />
+        <PaymentCard agreement={latestPendingPayment} />
       </div>
 
       <RecentRequests requests={requestsResponse.data} />

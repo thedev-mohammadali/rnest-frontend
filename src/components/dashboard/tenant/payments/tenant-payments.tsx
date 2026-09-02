@@ -1,5 +1,4 @@
 import PaymentHistory from "./payment-history";
-import UpcomingPayment from "./upcoming-payment";
 
 const TenantPayments = () => {
   return (
@@ -9,8 +8,6 @@ const TenantPayments = () => {
 
         <p className="text-muted-foreground">Manage your rent payments</p>
       </div>
-
-      <UpcomingPayment />
 
       <PaymentHistory />
     </div>

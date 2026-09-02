@@ -1,13 +1,11 @@
-"use client";
-
-import { useAuth } from "@/hooks/useAuth";
+import { getCurrentUser } from "@/services/auth/auth.server";
 import LandlordPayments from "../landlord/payments/landlord-payments";
 import TenantPayments from "../tenant/payments/tenant-payments";
 
-const PaymentsRouter = () => {
-  const { user } = useAuth();
+const PaymentsRouter = async () => {
+  const user = await getCurrentUser();
 
-  switch (user.role) {
+  switch (user?.role) {
     case "TENANT":
       return <TenantPayments />;
 

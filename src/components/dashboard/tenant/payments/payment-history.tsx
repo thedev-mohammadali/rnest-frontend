@@ -1,19 +1,12 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { formatCurrency } from "@/lib/formatter/currency";
+import { formatDateTime } from "@/lib/formatter/date";
+import { getAllPayments } from "@/services/payment.server";
+import PayNowButton from "./pay-button";
 import PaymentStatusBadge from "./payment-status-badge";
 
-const PaymentHistory = () => {
-  const payments = [
-    {
-      date: "Aug 01",
-      amount: "৳25,000",
-      status: "Paid",
-    },
-    {
-      date: "Jul 01",
-      amount: "৳25,000",
-      status: "Paid",
-    },
-  ];
+const PaymentHistory = async () => {
+  const { payments } = await getAllPayments();
 
   return (
     <Card>
@@ -24,14 +17,21 @@ const PaymentHistory = () => {
       <CardContent>
         <div className="space-y-4">
           {payments.map((payment) => (
-            <div key={payment.date} className="flex justify-between">
+            <div key={payment.id} className="flex justify-between">
               <div>
-                <p>{payment.date}</p>
+                <p>{formatDateTime(payment.updatedAt)}</p>
 
-                <p className="text-muted-foreground">{payment.amount}</p>
+                <p className="text-muted-foreground">
+                  {formatCurrency(payment.amount, "BDT")}
+                </p>
               </div>
 
-              <PaymentStatusBadge status={payment.status} />
+              <div className="flex items-center gap-1">
+                <PaymentStatusBadge status={payment.status} />
+                {payment.status === "PENDING" && (
+                  <PayNowButton rentalAgreementId={payment.rentalAgreementId} />
+                )}
+              </div>
             </div>
           ))}
         </div>
