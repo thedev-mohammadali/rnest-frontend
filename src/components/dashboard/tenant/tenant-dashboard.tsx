@@ -9,7 +9,6 @@ import { getMyRentalRequests } from "@/services/rental-request.service";
 import { PaginatedResponse } from "@/types/api";
 import { User } from "@/types/auth";
 import { RentalRequest } from "@/types/dashboard";
-import { RentalAgreement } from "@/types/rental-agreement";
 import CurrentRentalCard from "./current-rental-card";
 import PaymentCard from "./payment-card";
 import QuickActions from "./quick-actions";
@@ -22,20 +21,12 @@ type Props = {
 
 const TenantDashboard = async ({ user }: Props) => {
   const requestsResponse: PaginatedResponse<RentalRequest> =
-    await getMyRentalRequests();
+    await getMyRentalRequests(3);
 
-  const agreementsResponse: PaginatedResponse<RentalAgreement> =
-    await getMyRentalAgreements();
+  const { summary: agrementSummary } = await getMyRentalAgreements();
 
   const currentRental = await getRecentActiveAgreement();
   const latestPendingPayment = await getLatestPendingPayment();
-
-  const activeAgreements = agreementsResponse.data?.reduce((prev, curr) => {
-    if (curr.status === "ACTIVE") {
-      return prev + 1;
-    }
-    return prev;
-  }, 0);
 
   const { summary } = await getAllPayments();
 
@@ -47,7 +38,7 @@ const TenantDashboard = async ({ user }: Props) => {
 
     {
       title: "Active Agreements",
-      value: activeAgreements.toString(),
+      value: agrementSummary.active.toString(),
     },
 
     {

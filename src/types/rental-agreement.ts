@@ -33,6 +33,11 @@ export type RentalAgreement = {
   updatedAt: string;
 };
 
+export type RentalAgreementSummary = {
+  active: number;
+  completed: number;
+};
+
 export type RentalAgreementResponse = {
   success: boolean;
   message: string;
@@ -42,5 +47,8 @@ export type RentalAgreementResponse = {
     total: number;
     totalPages: number;
   };
-  data: RentalAgreement[];
+  data: {
+    agreements: RentalAgreement[];
+    summary: RentalAgreementSummary;
+  };
 };

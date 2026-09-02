@@ -4,7 +4,9 @@ import { RentalAgreementResponse } from "@/types/rental-agreement";
 export const getMyRentalAgreements = async () => {
   const response = await serverClient("/rental-agreements");
 
-  return await response.json();
+  const result: RentalAgreementResponse = await response.json();
+
+  return result.data;
 };
 
 export const getRecentActiveAgreement = async () => {
@@ -15,9 +17,9 @@ export const getRecentActiveAgreement = async () => {
     },
   );
 
-  const data: RentalAgreementResponse = await response.json();
+  const result: RentalAgreementResponse = await response.json();
 
-  return data.data[0];
+  return result.data.agreements[0];
 };
 
 export const getLatestPendingPayment = async () => {
@@ -28,7 +30,7 @@ export const getLatestPendingPayment = async () => {
     },
   );
 
-  const data: RentalAgreementResponse = await response.json();
+  const result: RentalAgreementResponse = await response.json();
 
-  return data.data[0];
+  return result.data.agreements[0];
 };

@@ -73,7 +73,7 @@ const PaymentCard = ({ agreement }: Props) => {
           </p>
 
           <Button asChild className="mt-6">
-            <Link href="/dashboard/agreements">View Rental Agreements</Link>
+            <Link href="/dashboard/payments">Recent Payments</Link>
           </Button>
         </CardContent>
       )}

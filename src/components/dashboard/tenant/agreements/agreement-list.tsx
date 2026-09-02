@@ -1,11 +1,8 @@
 import { getMyRentalAgreements } from "@/services/rental-agreement.service";
-import { RentalAgreementResponse } from "@/types/rental-agreement";
 import AgreementCard from "./agreement-card";
 
 const AgreementList = async () => {
-  const agreementResponse: RentalAgreementResponse =
-    await getMyRentalAgreements();
-  const agreements = agreementResponse.data;
+  const { agreements } = await getMyRentalAgreements();
 
   return (
     <div className="space-y-4">
