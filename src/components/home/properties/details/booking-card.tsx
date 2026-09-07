@@ -98,6 +98,7 @@ const BookingCard = ({ property, user }: Props) => {
 
       <BookingModal
         open={open}
+        propertyId={property.id}
         onOpenChange={setOpen}
         moveInDate={moveInDate}
         duration={duration}

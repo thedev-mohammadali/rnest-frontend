@@ -22,3 +22,21 @@ export const updateRequest = async (
     }),
   });
 };
+
+export const submitRequest = async (payload: {
+  propertyId: string;
+  tenantMessage?: string;
+  requestedMoveInDate: Date;
+  durationInMonths: number;
+}) => {
+  await browserClient(`/api/rental-request`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    cache: "no-store",
+    body: JSON.stringify({
+      payload,
+    }),
+  });
+};

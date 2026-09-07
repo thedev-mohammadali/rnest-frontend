@@ -1,5 +1,6 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -8,15 +9,13 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-
-import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { useState } from "react";
 
 type BookingModalProps = {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-
+  propertyId: string;
   moveInDate?: Date;
   duration: number;
 };
@@ -24,14 +23,34 @@ type BookingModalProps = {
 const BookingModal = ({
   open,
   onOpenChange,
+  propertyId,
   moveInDate,
   duration,
 }: BookingModalProps) => {
   const [message, setMessage] = useState("");
+  const [messageError, setMessageError] = useState("");
+
+  const handleMessageChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const value = e.target.value;
+
+    setMessage(value);
+
+    if (messageError) {
+      setMessageError("");
+    }
+  };
 
   const handleSubmit = () => {
+    const trimmedMessage = message.trim();
+
+    if (trimmedMessage.length > 0 && trimmedMessage.length < 3) {
+      setMessageError("Message must be at least 3 characters");
+      return;
+    }
+
     const payload = {
-      tenantMessage: message,
+      propertyId,
+      tenantMessage: trimmedMessage || undefined,
       requestedMoveInDate: moveInDate,
       durationInMonths: duration,
     };
@@ -68,13 +87,22 @@ const BookingModal = ({
           </div>
 
           <div className="space-y-2">
-            <p className="text-sm font-medium">Message to landlord</p>
+            <div className="flex items-center justify-between">
+              <p className="text-sm font-medium">Message to landlord</p>
+
+              <p className="text-muted-foreground text-xs">Optional</p>
+            </div>
 
             <Textarea
               value={message}
-              onChange={(e) => setMessage(e.target.value)}
+              onChange={handleMessageChange}
               placeholder="Tell the landlord about yourself..."
+              aria-invalid={!!messageError}
             />
+
+            {messageError && (
+              <p className="text-destructive text-sm">{messageError}</p>
+            )}
           </div>
         </div>
 
