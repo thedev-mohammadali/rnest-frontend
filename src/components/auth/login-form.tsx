@@ -30,7 +30,6 @@ const LoginForm = () => {
   const searchParams = useSearchParams();
 
   const callbackUrl = searchParams.get("callbackUrl");
-  console.log(callbackUrl);
 
   const handleFormSubmit = async (values: LoginFormValues) => {
     clearErrors("root");

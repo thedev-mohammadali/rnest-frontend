@@ -9,14 +9,18 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import { Spinner } from "@/components/ui/spinner";
 import { Textarea } from "@/components/ui/textarea";
+import { formatDateOnly } from "@/lib/formatter/date";
+import { submitRequest } from "@/services/rental-request.client";
 import { useState } from "react";
+import { toast } from "sonner";
 
 type BookingModalProps = {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   propertyId: string;
-  moveInDate?: Date;
+  moveInDate: Date;
   duration: number;
 };
 
@@ -29,6 +33,7 @@ const BookingModal = ({
 }: BookingModalProps) => {
   const [message, setMessage] = useState("");
   const [messageError, setMessageError] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleMessageChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const value = e.target.value;
@@ -40,7 +45,7 @@ const BookingModal = ({
     }
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     const trimmedMessage = message.trim();
 
     if (trimmedMessage.length > 0 && trimmedMessage.length < 3) {
@@ -48,14 +53,39 @@ const BookingModal = ({
       return;
     }
 
-    const payload = {
-      propertyId,
-      tenantMessage: trimmedMessage || undefined,
-      requestedMoveInDate: moveInDate,
-      durationInMonths: duration,
-    };
+    try {
+      setIsSubmitting(true);
 
-    console.log(payload);
+      await submitRequest({
+        propertyId,
+        tenantMessage: trimmedMessage || undefined,
+        requestedMoveInDate: formatDateOnly(moveInDate),
+        durationInMonths: duration,
+      });
+
+      toast.success("Rental request submitted successfully", {
+        position: "top-right",
+        closeButton: true,
+        duration: 1000,
+      });
+
+      setMessage("");
+      onOpenChange(false);
+    } catch (error) {
+      console.log(error);
+      toast.error(
+        error instanceof Error
+          ? error.message
+          : "Failed to submit rental request",
+        {
+          position: "top-right",
+          closeButton: true,
+          duration: 1000,
+        },
+      );
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -63,7 +93,6 @@ const BookingModal = ({
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Request Booking</DialogTitle>
-
           <DialogDescription>
             Send a rental request to the landlord.
           </DialogDescription>
@@ -73,15 +102,13 @@ const BookingModal = ({
           <div className="bg-muted space-y-3 rounded-lg p-4">
             <div>
               <p className="text-sm font-medium">Move-in date</p>
-
               <p className="text-muted-foreground text-sm">
-                {moveInDate?.toDateString()}
+                {moveInDate.toDateString()}
               </p>
             </div>
 
             <div>
               <p className="text-sm font-medium">Rental duration</p>
-
               <p className="text-muted-foreground text-sm">{duration} months</p>
             </div>
           </div>
@@ -89,7 +116,6 @@ const BookingModal = ({
           <div className="space-y-2">
             <div className="flex items-center justify-between">
               <p className="text-sm font-medium">Message to landlord</p>
-
               <p className="text-muted-foreground text-xs">Optional</p>
             </div>
 
@@ -98,6 +124,7 @@ const BookingModal = ({
               onChange={handleMessageChange}
               placeholder="Tell the landlord about yourself..."
               aria-invalid={!!messageError}
+              disabled={isSubmitting}
             />
 
             {messageError && (
@@ -107,7 +134,20 @@ const BookingModal = ({
         </div>
 
         <DialogFooter>
-          <Button onClick={handleSubmit}>Send Request</Button>
+          <Button
+            onClick={handleSubmit}
+            disabled={isSubmitting}
+            className="min-w-30"
+          >
+            {isSubmitting ? (
+              <>
+                <Spinner data-icon="inline-start" />
+                Sending...
+              </>
+            ) : (
+              "Send Request"
+            )}
+          </Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>

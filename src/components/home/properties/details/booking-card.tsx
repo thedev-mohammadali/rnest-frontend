@@ -96,13 +96,15 @@ const BookingCard = ({ property, user }: Props) => {
         </CardContent>
       </Card>
 
-      <BookingModal
-        open={open}
-        propertyId={property.id}
-        onOpenChange={setOpen}
-        moveInDate={moveInDate}
-        duration={duration}
-      />
+      {moveInDate && (
+        <BookingModal
+          open={open}
+          propertyId={property.id}
+          onOpenChange={setOpen}
+          moveInDate={moveInDate}
+          duration={duration}
+        />
+      )}
     </>
   );
 };

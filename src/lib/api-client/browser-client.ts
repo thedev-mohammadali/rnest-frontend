@@ -40,5 +40,18 @@ export const browserClient = async <T>(
     throw new Error(message);
   }
 
+  // if (!response.ok) {
+  //   let errorData;
+
+  //   try {
+  //     errorData = await response.json();
+  //     console.error("API Error:", errorData);
+  //   } catch {
+  //     console.error("API Error: Unable to parse response");
+  //   }
+
+  //   throw new Error(errorData?.message ?? "Something went wrong");
+  // }
+
   return response.json();
 };
