@@ -1,7 +1,8 @@
 import { Badge } from "@/components/ui/badge";
+import { RentalRequestStatus } from "@/types/rental-requests";
 
 type Props = {
-  status: "PENDING" | "APPROVED" | "REJECTED";
+  status: RentalRequestStatus;
 };
 
 const RequestStatusBadge = ({ status }: Props) => {
@@ -11,6 +12,8 @@ const RequestStatusBadge = ({ status }: Props) => {
     APPROVED: "bg-green-100 text-green-700",
 
     REJECTED: "bg-red-100 text-red-700",
+
+    CANCELLED: "bg-red-100 text-red-700",
   };
 
   return <Badge className={styles[status]}>{status}</Badge>;

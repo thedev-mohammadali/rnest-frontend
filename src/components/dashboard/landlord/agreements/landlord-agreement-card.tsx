@@ -2,42 +2,41 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 import { Button } from "@/components/ui/button";
 
+import { formatDate } from "@/lib/formatter/date";
+import { RentalAgreement } from "@/types/rental-agreement";
 import AgreementStatusBadge from "./agreement-status-badge";
 
 type Props = {
-  agreement: {
-    property: string;
-    tenant: string;
-    rent: number;
-    status: "ACTIVE" | "EXPIRED" | "PENDING";
-    duration: string;
-  };
+  agreement: RentalAgreement;
 };
 
 const LandlordAgreementCard = ({ agreement }: Props) => {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>{agreement.property}</CardTitle>
+        <CardTitle>{agreement.property.title}</CardTitle>
       </CardHeader>
 
       <CardContent className="space-y-5">
         <div>
           <p className="text-muted-foreground text-sm">Tenant</p>
 
-          <p className="font-medium">{agreement.tenant}</p>
+          <p className="font-medium">{agreement.tenant.name}</p>
         </div>
 
         <div>
           <p className="text-muted-foreground text-sm">Monthly Rent</p>
 
-          <p className="font-bold">৳{agreement.rent}</p>
+          <p className="font-bold">৳{agreement.property.rent}</p>
         </div>
 
         <div>
           <p className="text-muted-foreground text-sm">Lease Period</p>
 
-          <p>{agreement.duration}</p>
+          <p>
+            {formatDate(agreement.leaseStartDate)} -{" "}
+            {formatDate(agreement.leaseEndDate)}
+          </p>
         </div>
 
         <AgreementStatusBadge status={agreement.status} />

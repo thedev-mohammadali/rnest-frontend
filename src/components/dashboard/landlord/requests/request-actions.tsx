@@ -1,9 +1,10 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import { RentalRequestStatus } from "@/types/rental-requests";
 
 type Props = {
-  status: "PENDING" | "APPROVED" | "REJECTED";
+  status: RentalRequestStatus;
 };
 
 const RequestActions = ({ status }: Props) => {
