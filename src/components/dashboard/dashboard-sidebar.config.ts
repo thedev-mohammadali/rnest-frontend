@@ -7,7 +7,6 @@ import {
   Home,
   Layers,
   LucideIcon,
-  PlusCircle,
   User,
   Users,
 } from "lucide-react";
@@ -29,12 +28,6 @@ export const landlordSidebarLinks = [
     title: "My Properties",
     href: "/dashboard/properties",
     icon: Building2,
-  },
-
-  {
-    title: "Create Property",
-    href: "/dashboard/properties/create",
-    icon: PlusCircle,
   },
 
   {

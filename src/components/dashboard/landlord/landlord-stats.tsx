@@ -1,28 +1,36 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { formatCurrency } from "@/lib/formatter/currency";
+import { getMyProperties } from "@/services/property.service";
+import { getMonthlyRevenue } from "@/services/rental-agreement.service";
+import { getPendingRequests } from "@/services/rental-request.service";
 
-const stats = [
-  {
-    title: "Total Properties",
-    value: "12",
-  },
+const LandlordStats = async () => {
+  const { totalProperties, availableProperties } = await getMyProperties();
+  const { meta } = await getPendingRequests();
+  const monthlyRevenue = await getMonthlyRevenue();
 
-  {
-    title: "Available Properties",
-    value: "5",
-  },
+  const stats = [
+    {
+      title: "Total Properties",
+      value: totalProperties,
+    },
 
-  {
-    title: "Rental Requests",
-    value: "8",
-  },
+    {
+      title: "Available Properties",
+      value: availableProperties,
+    },
 
-  {
-    title: "Monthly Revenue",
-    value: "৳120,000",
-  },
-];
+    {
+      title: "Pending Requests",
+      value: meta.total,
+    },
 
-const LandlordStats = () => {
+    {
+      title: "Monthly Revenue",
+      value: formatCurrency(monthlyRevenue, "BDT"),
+    },
+  ];
+
   return (
     <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
       {stats.map((stat) => (

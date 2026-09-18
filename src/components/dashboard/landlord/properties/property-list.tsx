@@ -1,29 +1,44 @@
+import { getMyProperties } from "@/services/property.service";
+
 import LandlordPropertyCard from "./landlord-property-card";
+import PropertyEmptyState from "./property-empty-state";
+import PropertyPagination from "./property-pagination";
 
-const properties = [
-  {
-    id: "1",
-    title: "Modern Apartment",
-    location: "Dhaka, Bangladesh",
-    rent: 25000,
-    status: "AVAILABLE",
-  },
+type Props = {
+  searchParams: Promise<{
+    page?: string;
+  }>;
+};
 
-  {
-    id: "2",
-    title: "Luxury Villa",
-    location: "Chittagong",
-    rent: 40000,
-    status: "RENTED",
-  },
-];
+const PropertyList = async ({ searchParams }: Props) => {
+  const { page } = await searchParams;
 
-const PropertyList = () => {
+  const currentPage = Math.max(1, Number(page) || 1);
+
+  const { properties, totalProperties, totalPages } = await getMyProperties(
+    currentPage,
+    6,
+  );
+
+  if (properties.length === 0) {
+    return <PropertyEmptyState />;
+  }
+
   return (
-    <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
-      {properties.map((property) => (
-        <LandlordPropertyCard key={property.id} property={property} />
-      ))}
+    <div className="space-y-8">
+      <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+        {properties.map((property) => (
+          <LandlordPropertyCard key={property.id} property={property} />
+        ))}
+      </div>
+
+      {totalPages > 1 && (
+        <PropertyPagination
+          currentPage={currentPage}
+          totalPages={totalPages}
+          totalProperties={totalProperties}
+        />
+      )}
     </div>
   );
 };

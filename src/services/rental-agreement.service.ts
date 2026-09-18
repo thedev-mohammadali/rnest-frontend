@@ -1,4 +1,5 @@
 import serverClient from "@/lib/api-client/serverClient";
+import { ApiResponse } from "@/types/api";
 import { RentalAgreementResponse } from "@/types/rental-agreement";
 
 export const getMyRentalAgreements = async () => {
@@ -33,4 +34,16 @@ export const getLatestPendingPayment = async () => {
   const result: RentalAgreementResponse = await response.json();
 
   return result.data.agreements[0];
+};
+
+export const getMonthlyRevenue = async () => {
+  const response = await serverClient("/rental-agreements/monthly-revenue", {
+    next: {
+      revalidate: 120,
+    },
+  });
+
+  const result: ApiResponse<{ monthlyRevenue: number }> = await response.json();
+
+  return result.data.monthlyRevenue;
 };

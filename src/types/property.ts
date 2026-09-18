@@ -33,3 +33,22 @@ export interface Property {
   category: Category;
   reviews: Review[];
 }
+
+export interface PropertySummary {
+  available: number;
+}
+
+export interface MyPropertiesResponse {
+  success: boolean;
+  message: string;
+  meta: {
+    page: number;
+    limit: number;
+    total: number;
+    totalPages: number;
+  };
+  data: {
+    properties: Property[];
+    summary: PropertySummary;
+  };
+}

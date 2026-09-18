@@ -1,6 +1,6 @@
 import serverClient from "@/lib/api-client/serverClient";
 import { ApiResponse, PaginatedResponse } from "@/types/api";
-import { Property } from "@/types/property";
+import { MyPropertiesResponse, Property } from "@/types/property";
 
 export const getFeaturedProperties = async () => {
   const res = await serverClient("/properties?limit=6", {
@@ -36,4 +36,22 @@ export const getPropertyById = async (id: string): Promise<Property> => {
   const result: ApiResponse<Property> = await res.json();
 
   return result.data;
+};
+
+export const getMyProperties = async (page: number = 1, limit: number = 6) => {
+  const res = await serverClient(`/properties/me?page=${page}&limit=${limit}`, {
+    next: {
+      revalidate: 60,
+    },
+  });
+
+  const result: MyPropertiesResponse = await res.json();
+
+  return {
+    properties: result.data.properties,
+    totalProperties: result.meta.total,
+    totalPages: result.meta.totalPages,
+    currentPage: result.meta.page,
+    availableProperties: result.data.summary.available,
+  };
 };
